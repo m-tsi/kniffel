@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" media="(max-width:1800px)"  href="css/stylesheetpc.css">
+    <link rel="stylesheet" media="(min-width:1800px)"  href="css/stylesheetmobile.css">
+    <link rel="icon" href="img/websiteicon.png">
+    <title> Kniffel - multiplayer </title>
+  </head>
+  <body onload="initialize_game()">
+
+    <div id="table1">
+      <table>
+        <tr>
+          <th> Spiel Nummer </th>
+          <th id="points"> Punkte </th>
+        </tr>
+        <tr>
+          <th> 1er </th>
+          <th id="1" onclick="selectfieldnum(1)">  </th>
+        </tr>
+        <tr>
+          <th> 2er </th>
+          <th id="2" onclick="selectfieldnum(2)">  </th>
+        </tr>
+        <tr>
+          <th> 3er </th>
+          <th id="3" onclick="selectfieldnum(3)">  </th>
+        </tr>
+        <tr>
+          <th> 4er </th>
+          <th id="4" onclick="selectfieldnum(4)"> </th>
+        </tr>
+        <tr>
+          <th> 5er </th>
+          <th id="5" onclick="selectfieldnum(5)"> </th>
+        </tr>
+        <tr>
+          <th> 6er </th>
+          <th id="6" onclick="selectfieldnum(6)"> </th>
+        </tr>
+        <tr>
+          <th> Summe </th>
+          <th id="sumtop_nobonus"> </th>
+        </tr>
+        <tr>
+          <th> Bonus </th>
+          <th id="bonus"> </th>
+        </tr>
+        <tr>
+          <th> Summe mit Bonus </th>
+          <th id="sumtop_bonus"> </th>
+        </tr>
+        <tr>
+          <th> Dreierpasch </th>
+          <th id="Dreierpasch" onclick="selectfield('Dreierpasch')"> </th>
+        </tr>
+        <tr>
+          <th> Viererpasch </th>
+          <th id="Viererpasch" onclick="selectfield('Viererpasch')"> </th>
+        </tr>
+        <tr>
+          <th> Kleine Straße </th>
+          <th id="KleineStraße" onclick="selectfield('KleineStraße')"> </th>
+        </tr>
+        <tr>
+          <th> Große Straße </th>
+          <th id="GroßeStraße" onclick="selectfield('GroßeStraße')"> </th>
+        </tr>
+        <tr>
+          <th> FullHouse </th>
+          <th id="FullHouse" onclick="selectfield('FullHouse')"> </th>
+        </tr>
+        <tr>
+          <th> Kniffel </th>
+          <th id="Kniffel" onclick="selectfield('Kniffel')"> </th>
+        </tr>
+        <tr>
+          <th> Chance </th>
+          <th id="Chance" onclick="selectfield('Chance')"> </th>
+        </tr>
+        <tr>
+          <th> Summe Unten </th>
+          <th id="sum_bottom"> </th>
+        </tr>
+        <tr>
+          <th> Gesamtsumme </th>
+          <th id="sum_total"> </th>
+        </tr>
+
+      </table>
+    </div>
+    <div id="board">
+      <center> <button type="button" name="button" id="roll_click" onclick="roll()"> ROLLEN </button> <br>
+      </center>
+      <div class="dice_first_row">
+        <img class="single_dice" alt="" name="0" id="dice1-0" width="50">
+        <img class="single_dice" alt="" name="1" id="dice1-1" width="50">
+        <img class="single_dice" alt="" name="2" id="dice1-2" width="50">
+        <img class="single_dice" alt="" name="3" id="dice1-3" width="50">
+        <img class="single_dice" alt="" name="4" id="dice1-4" width="50">
+      </div> <br>
+      <div class="dice_second_row">
+        <img class="single_dice" alt="" id="dice2-0" width="50">
+        <img class="single_dice" alt="" id="dice2-1" width="50">
+        <img class="single_dice" alt="" id="dice2-2" width="50">
+        <img class="single_dice" alt="" id="dice2-3" width="50">
+        <img class="single_dice" alt="" id="dice2-4" width="50">
+      </div>
+
+      <center>
+        Verbleibende Züge: <div id="turns"> </div>  <br>
+        Spiel Nummer: <div id="return_game_number"> </div> <br>
+        Bestes Ergebnis: <div id="return_best_result"> </div>  <br>
+        <div id="game_result"> </div> <br>
+      </center>
+    </div>
+
+    <div id="table2">
+      <table>
+        <tr>
+          <th> Spiel Nummer </th>
+          <th id="points"> Punkte </th>
+        </tr>
+        <tr>
+          <th> 1er </th>
+          <th id="1" onclick="selectfieldnum(1)">  </th>
+        </tr>
+        <tr>
+          <th> 2er </th>
+          <th id="2" onclick="selectfieldnum(2)">  </th>
+        </tr>
+        <tr>
+          <th> 3er </th>
+          <th id="3" onclick="selectfieldnum(3)">  </th>
+        </tr>
+        <tr>
+          <th> 4er </th>
+          <th id="4" onclick="selectfieldnum(4)"> </th>
+        </tr>
+        <tr>
+          <th> 5er </th>
+          <th id="5" onclick="selectfieldnum(5)"> </th>
+        </tr>
+        <tr>
+          <th> 6er </th>
+          <th id="6" onclick="selectfieldnum(6)"> </th>
+        </tr>
+        <tr>
+          <th> Summe </th>
+          <th id="sumtop_nobonus"> </th>
+        </tr>
+        <tr>
+          <th> Bonus </th>
+          <th id="bonus"> </th>
+        </tr>
+        <tr>
+          <th> Summe mit Bonus </th>
+          <th id="sumtop_bonus"> </th>
+        </tr>
+        <tr>
+          <th> Dreierpasch </th>
+          <th id="Dreierpasch" onclick="selectfield('Dreierpasch')"> </th>
+        </tr>
+        <tr>
+          <th> Viererpasch </th>
+          <th id="Viererpasch" onclick="selectfield('Viererpasch')"> </th>
+        </tr>
+        <tr>
+          <th> Kleine Straße </th>
+          <th id="KleineStraße" onclick="selectfield('KleineStraße')"> </th>
+        </tr>
+        <tr>
+          <th> Große Straße </th>
+          <th id="GroßeStraße" onclick="selectfield('GroßeStraße')"> </th>
+        </tr>
+        <tr>
+          <th> FullHouse </th>
+          <th id="FullHouse" onclick="selectfield('FullHouse')"> </th>
+        </tr>
+        <tr>
+          <th> Kniffel </th>
+          <th id="Kniffel" onclick="selectfield('Kniffel')"> </th>
+        </tr>
+        <tr>
+          <th> Chance </th>
+          <th id="Chance" onclick="selectfield('Chance')"> </th>
+        </tr>
+        <tr>
+          <th> Summe Unten </th>
+          <th id="sum_bottom"> </th>
+        </tr>
+        <tr>
+          <th> Gesamtsumme </th>
+          <th id="sum_total"> </th>
+        </tr>
+
+      </table>
+    </div>
+
+
+  </body>
+  <footer>
+    <div id="innerfooter">
+      <! ... >
+      Kontakt |
+      Regeln
+    </div>
+  </footer>
+
+
+<html>

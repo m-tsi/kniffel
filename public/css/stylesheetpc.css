@@ -1,0 +1,43 @@
+body{
+  color: blue;
+  font-family: sans-serif;
+  font-size: 1.2em;
+}
+
+table,th,td{
+  border-radius: 0.05em;
+  border-style: solid;
+  border-color: black;
+  border-collapse: collapse;
+}
+
+#option{
+  background-color: blue;
+  color: white;
+  margin: 1em;
+  padding: 1em;
+  text-decoration: none;
+}
+
+
+
+#board{
+  display: inline-block;
+  border-radius: 0.05em;
+  border-style: solid;
+  border-color: black;
+  padding-right: 5em;
+  padding-left:5em;
+  padding-bottom: 7em;
+  vertical-align: top;
+}
+
+div{
+  display: inline-block;
+}
+
+img{
+  border-radius: 0.05em;
+  border-style: solid;
+  border-color: black;
+}

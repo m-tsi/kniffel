@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" media="(max-width:1800px)"  href="css/stylesheetpc.css">
+    <link rel="stylesheet" media="(min-width:1800px)"  href="css/stylesheetmobile.css">
+    <link rel="icon" href="img/websiteicon.png">
+    <title> Kniffel - singleplayer </title>
+  </head>
+  <body onload="initialize_game()">
+    <center>
+      NEUES SPIEL STARTEN <br>
+      <br>
+      <label> Spielname: </label>
+      <input type="text" id="getgamename" name="getplayername" value="Spiel1" required> </br>
+      <label> Spielername: </label>
+      <input type="text" id="getplayername" name="getplayername" value="Bob" required> </br>
+      <label> Anzahl Würfel: </label>
+      <input type="text" id="getdiceamount" name="getplayername" value="5" min="2" max="10" required> </br>
+      <label> Anzahl Zügen: </label>
+      <input type="text" id="getturns" name="getplayername" value="3" min="1" max="20" required> </br>
+      <label> Augenzahl: </label>
+      <input type="text" id="geteyevalue" name="getplayername" value="6" min="5" max="20" required> </br>
+      <button id="custom_game" value="submit" onclick="create_custom_game()"> NEUES SPIEL ERSTELLEN </button> </br>
+    </center></br>
+    <center>
+      SPIEL BEITRETEN:<br>
+      <label> Code: </label>
+      <input type="text" id="getplayername" name="getplayername" value="Spiel1" required> </br>
+      <button id="custom_game" value="submit" onclick="create_custom_game()"> EXISTIERENDEM SPIEL BEITRETEN </button> </br>
+    </center></br>
+
+  </body>
+<html>

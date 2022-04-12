@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" media="(max-width:1800px)"  href="css/stylesheetpc.css">
+    <link rel="stylesheet" media="(min-width:1800px)"  href="css/stylesheetmobile.css">
+    <link rel="icon" href="img/websiteicon.png">
+    <title> Kniffel - singleplayer </title>
+  </head>
+  <body onload="initialize_game()">
+
+    <div id="table">
+      <table>
+        <tr>
+          <th> Spiel Nummer </th>
+          <th id="points"> Punkte </th>
+        </tr>
+        <tr>
+          <th> 1er </th>
+          <th id="1" onclick="selectfieldnum(1)">  </th>
+        </tr>
+        <tr>
+          <th> 2er </th>
+          <th id="2" onclick="selectfieldnum(2)">  </th>
+        </tr>
+        <tr>
+          <th> 3er </th>
+          <th id="3" onclick="selectfieldnum(3)">  </th>
+        </tr>
+        <tr>
+          <th> 4er </th>
+          <th id="4" onclick="selectfieldnum(4)"> </th>
+        </tr>
+        <tr>
+          <th> 5er </th>
+          <th id="5" onclick="selectfieldnum(5)"> </th>
+        </tr>
+        <tr>
+          <th> 6er </th>
+          <th id="6" onclick="selectfieldnum(6)"> </th>
+        </tr>
+        <tr>
+          <th> Summe </th>
+          <th id="sumtop_nobonus"> </th>
+        </tr>
+        <tr>
+          <th> Bonus </th>
+          <th id="bonus"> </th>
+        </tr>
+        <tr>
+          <th> Summe mit Bonus </th>
+          <th id="sumtop_bonus"> </th>
+        </tr>
+        <tr>
+          <th> Dreierpasch </th>
+          <th id="Dreierpasch" onclick="selectfield('Dreierpasch')"> </th>
+        </tr>
+        <tr>
+          <th> Viererpasch </th>
+          <th id="Viererpasch" onclick="selectfield('Viererpasch')"> </th>
+        </tr>
+        <tr>
+          <th> Kleine Straße </th>
+          <th id="KleineStraße" onclick="selectfield('KleineStraße')"> </th>
+        </tr>
+        <tr>
+          <th> Große Straße </th>
+          <th id="GroßeStraße" onclick="selectfield('GroßeStraße')"> </th>
+        </tr>
+        <tr>
+          <th> FullHouse </th>
+          <th id="FullHouse" onclick="selectfield('FullHouse')"> </th>
+        </tr>
+        <tr>
+          <th> Kniffel </th>
+          <th id="Kniffel" onclick="selectfield('Kniffel')"> </th>
+        </tr>
+        <tr>
+          <th> Chance </th>
+          <th id="Chance" onclick="selectfield('Chance')"> </th>
+        </tr>
+        <tr>
+          <th> Summe Unten </th>
+          <th id="sum_bottom"> </th>
+        </tr>
+        <tr>
+          <th> Gesamtsumme </th>
+          <th id="sum_total"> </th>
+        </tr>
+
+      </table>
+    </div>
+    <div id="board">
+      <div class="dice_first_row">
+        <img class="single_dice" alt="" name="0" id="dice1-0" width="50">
+        <img class="single_dice" alt="" name="1" id="dice1-1" width="50">
+        <img class="single_dice" alt="" name="2" id="dice1-2" width="50">
+        <img class="single_dice" alt="" name="3" id="dice1-3" width="50">
+        <img class="single_dice" alt="" name="4" id="dice1-4" width="50">
+      </div> <br>
+      <div class="dice_second_row">
+        <img class="single_dice" alt="" id="dice2-0" width="50">
+        <img class="single_dice" alt="" id="dice2-1" width="50">
+        <img class="single_dice" alt="" id="dice2-2" width="50">
+        <img class="single_dice" alt="" id="dice2-3" width="50">
+        <img class="single_dice" alt="" id="dice2-4" width="50">
+      </div>
+      <center> <button type="button" name="button" id="roll_click" onclick="roll()"> ROLLEN </button> <br>
+      </center>
+      
+      <center>
+        Verbleibende Züge: <div id="turns"> </div>  <br>
+        Spiel Nummer: <div id="return_game_number"> </div> <br>
+        Bestes Ergebnis: <div id="return_best_result"> </div>  <br>
+        <div id="game_result"> </div>
+
+      </center>
+
+
+    </div>
+
+    <footer>
+      <div id="innerfooter">
+        <! ... >
+        Kontakt |
+        Regeln
+      </div>
+    </footer>
+
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"> </script>
+  <script type="text/javascript" >//source w3 link
+
+    //safe all important variables for current session
+    //sessionStorage.setItem("results_upper_fields",0);
+    //sessionStorage.setItem("results_lower_fields",0);
+    //sessionStorage.setItem("result_total",0);
+
+    function show_gameinfo(){
+      if (sessionStorage.length==0){
+        localStorage.setItem("game_number",1);
+        localStorage.setItem("best_result",0);
+      }
+      else{
+        localStorage.setItem("game_number",parseInt(localStorage.getItem("game_number"))+1);
+        localStorage.setItem("best_result",Math.max(parseInt(localStorage.getItem("best_result")),parseInt(sessionStorage.getItem("sum_total"))+parseInt(sessionStorage.getItem("bonus"))));
+      }
+      document.getElementById("return_game_number").innerHTML=localStorage.getItem("game_number");
+      document.getElementById("return_best_result").innerHTML=localStorage.getItem("best_result");
+    }
+
+    window.onbeforeunload= function(){
+      sessionStorage.clear();
+      localStorage.clear();
+    };
+
+    function initialize_game(){
+      show_gameinfo();
+      sessionStorage.clear();
+      sessionStorage.setItem("roundcounter",0);
+      sessionStorage.setItem("amount_of_dice",5);
+      sessionStorage.setItem("turns",3);
+      sessionStorage.setItem("row1",JSON.stringify([0,0,0,0,0]));
+      sessionStorage.setItem("row2",JSON.stringify([0,0,0,0,0]));
+      sessionStorage.setItem("sumtop_bonus",0);
+      sessionStorage.setItem("sumtop_nobonus",0);
+      sessionStorage.setItem("bonus",0);
+      sessionStorage.setItem("sum_bottom",0);
+      sessionStorage.setItem("sum_total",0);
+      sessionStorage.setItem("open_fields",12);
+      showdice();
+
+
+    }
+
+    function showdice(){
+      var row1=JSON.parse(sessionStorage.getItem("row1"));//source: https://www.codegrepper.com/code-examples/javascript/save+array+to+session+storage
+      var row2=JSON.parse(sessionStorage.getItem("row2"));
+      document.getElementById("turns").innerHTML=sessionStorage.getItem("turns");
+      for (var i = 0; i < 5; i++) {
+        document.getElementById("dice1-"+String(i)).src="img/dice"+String(row1[i])+".png";
+        document.getElementById("dice1-"+String(i)).onclick = function(){select_dice(this)};
+        document.getElementById("dice1-"+String(i)).value = String(row1[i]);
+      }
+
+      for (var i = 0; i < 5; i++) {
+        document.getElementById("dice2-"+String(i)).src="img/dice"+String(row2[i])+".png";
+      }
+
+
+    }
+    //showdice();
+
+
+
+    function roll(){
+      if (sessionStorage.getItem("turns")>0){
+        var random_array= Array.from({length:  sessionStorage.getItem("amount_of_dice")}, () => Math.ceil(Math.random() * 6)); //source!
+        var zeros= new Array(5-sessionStorage.getItem("amount_of_dice")).fill(0);//souce
+        sessionStorage.setItem("row1",JSON.stringify(random_array.concat(zeros)));
+        sessionStorage.setItem("turns",sessionStorage.getItem("turns")-1);
+        showdice();
+      }
+    }
+
+    function select_dice(clicked_dice){
+
+      var row1=JSON.parse(sessionStorage.getItem("row1"));//source: https://www.codegrepper.com/code-examples/javascript/save+array+to+session+storage
+      var row2=JSON.parse(sessionStorage.getItem("row2"));
+      var clicked_position=clicked_dice.name;
+      var clicked_value=clicked_dice.value;
+
+      if (clicked_value!=0){
+      row1.splice(clicked_position,1);
+      row1.push(0);
+      sessionStorage.setItem("amount_of_dice",sessionStorage.getItem("amount_of_dice")-1);
+      row2.unshift(clicked_value);
+      row2.pop();
+      sessionStorage.setItem("row1",JSON.stringify(row1));
+      sessionStorage.setItem("row2",JSON.stringify(row2));
+      showdice();
+      }
+    }
+
+
+
+    function updatetable(){
+      document.getElementById("sumtop_nobonus").innerHTML=sessionStorage.getItem("sumtop_nobonus");
+      document.getElementById("bonus").innerHTML=sessionStorage.getItem("bonus");
+      document.getElementById("sumtop_bonus").innerHTML=parseInt(sessionStorage.getItem("sumtop_nobonus"))+parseInt(sessionStorage.getItem("bonus"));
+      document.getElementById("sum_bottom").innerHTML=sessionStorage.getItem("sum_bottom");
+      document.getElementById("sum_total").innerHTML=parseInt(sessionStorage.getItem("bonus"))+parseInt(sessionStorage.getItem("sum_total"));
+      document.getElementById("turns").innerHTML=sessionStorage.getItem("turns");
+    }
+
+
+    function reset_dice(){
+      sessionStorage.setItem("turns",3);
+      sessionStorage.setItem("row1",JSON.stringify([0,0,0,0,0]));
+      sessionStorage.setItem("row2",JSON.stringify([0,0,0,0,0]));
+      sessionStorage.setItem("amount_of_dice",5);
+      sessionStorage.setItem("open_fields",sessionStorage.getItem("open_fields")-1);
+      showdice();
+    }
+
+    function check_win(){
+      if(sessionStorage.getItem("open_fields")==0){
+        var endresult=parseInt(sessionStorage.getItem("sum_total"))+ parseInt(sessionStorage.getItem("bonus"));
+        document.getElementById("game_result").innerHTML="Punktzahl:" + endresult + "<br>";
+        document.getElementById("roll_click").onclick="";
+        //source:https://sebhastian.com/javascript-create-button/
+        let button = document.createElement("button");
+        button.innerHTML= "NEUES SPIEL";
+        document.getElementById("game_result").appendChild(button);
+        button.addEventListener("click",()=>{reset_game();});
+
+
+      }
+    }
+
+
+
+
+    function selectfieldnum(fieldname){
+      if (sessionStorage.getItem(fieldname)==null){
+        var row2=JSON.parse(sessionStorage.getItem("row2"));
+        //selected_dice_sorted=row2.sort();
+        var result_field= (row2.filter(x=> parseInt(x)==parseInt(fieldname)).length)*parseInt(fieldname);//source: https://stackoverflow.com/questions/6120931/how-to-count-certain-elements-in-array
+        sessionStorage.setItem(fieldname,JSON.stringify(result_field));
+        document.getElementById(fieldname).innerHTML= sessionStorage.getItem(fieldname);
+        sessionStorage.setItem("sumtop_nobonus",parseInt(sessionStorage.getItem("sumtop_nobonus"))+parseInt(result_field));
+        if (sessionStorage.getItem("sumtop_nobonus") >63){
+          sessionStorage.setItem("bonus",35);
+        }
+
+        sessionStorage.setItem("sum_total",parseInt(sessionStorage.getItem("sum_total"))+parseInt(result_field));
+        check_win();
+        reset_dice();
+        updatetable();
+        }
+    }
+
+
+    function sum_of_array(array){
+      var sum=0;
+      for (var i = 0; i < array.length; i++) {
+        sum+=parseInt(array[i]);
+      }
+      return sum;
+    }
+
+    function selectfield(fieldname){
+      if (sessionStorage.getItem(fieldname)==null){
+      var row2=JSON.parse(sessionStorage.getItem("row2"));
+      var row2_nozero=row2.filter(x=> parseInt(x)!=0);
+
+      var row2_sorted=row2.sort();
+      var row2_sorted_set= [...new Set(row2_sorted)];//https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
+      var row2_string=row2_sorted_set.join('');
+      var result_field=0;
+
+      if (fieldname=="Dreierpasch" && new Set(row2_nozero).size<=(row2_nozero.length-2) && row2_nozero.length>=3){
+        result_field= sum_of_array(row2_nozero);
+      }
+
+      else if (fieldname=="Viererpasch" && new Set(row2_nozero).size<=(row2_nozero.length-3) && row2_nozero.length>=4){
+        result_field= sum_of_array(row2_nozero);
+
+      }
+
+      else if (fieldname=="Kniffel" && new Set(row2_nozero).size==1 && row2_nozero.length==5){
+        result_field=50;
+      }
+
+      else if (fieldname=="Chance"){
+          result_field=sum_of_array(row2_nozero);
+      }
+
+      else if (fieldname=="FullHouse" && new Set(row2_nozero).size==2 && row2_nozero.length==5){
+          result_field=25;
+      }
+
+      else if (fieldname=="KleineStraße" && (row2_string.includes('1234')  ||row2_string.includes('2345')   ||row2_string.includes('3456'))){
+        result_field=30;
+      }
+
+      else if (fieldname=="GroßeStraße" && (row2_string.includes('12345') || row2_string.includes('3456') )){
+        result_field=40;
+      }
+
+      sessionStorage.setItem(fieldname,result_field);
+      document.getElementById(fieldname).innerHTML=sessionStorage.getItem(fieldname);
+
+      sessionStorage.setItem("sum_bottom",parseInt(sessionStorage.getItem("sum_bottom"))+parseInt(result_field));
+      sessionStorage.setItem("sum_total",parseInt(sessionStorage.getItem("sum_total"))+parseInt(result_field));
+      check_win();
+      reset_dice();
+      updatetable();
+    }
+    }
+
+
+
+
+
+    //function createuser(){
+    //  localStorage.setItem("player",name);
+    //  localStorage.setItem("bestscore",0);
+
+    //}
+
+    function reset_game(){
+      $("table th:nth-child(2)").html('');//source
+      document.getElementById('points').innerHTML='Punkte';
+      document.getElementById("roll_click").addEventListener('click',()=>{roll();});
+      document.getElementById("game_result").innerHTML="";
+      initialize_game();
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </script>
+<html>
