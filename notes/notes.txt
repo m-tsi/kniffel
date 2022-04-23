@@ -1,0 +1,41 @@
+was muss alles in der DATENBANK stehen:
+
+- Sessions:
+	-ID
+	- Name
+	- Aktivitätsstatus
+- Nutzerdaten:
+	- ID
+	- Name
+	- zugehörige Session
+	- Tabelle mit Punkten für aktuelle Session
+	- Bonus-Aktiviert
+	- aktuelles Set von 0-5 aktiven Zahlen (eventuell. alle Würfe speichern)
+	- aktuelles Set von 0-5 festen Zahlen
+	- Anzahl verbleibender Züge
+
+	- Timer
+	- Anzahl Spiele
+	- Liste mit vorherigen Punktzahlen
+
+
+SCHNITTSTELLEN:
+  -
+  -
+  -
+
+FUNKTIONEN:
+  Spielstart:
+    - Funktion
+
+  Im Spiel:
+    1. roll(): erzeugt 1-5 zufällige Zahlen und gibt dem Client die passenden Würfel-Bilder aus
+    2. selectdice(clicked_dice): Löscht geklicktes Feld aus Reihe 1 und fügt es an den Anfang von Reihe 2
+    3. selectfield(field):Wählt Stelle in Tabelle aus, berechnet die Punktzahl und
+    4. check_win():
+    5. updatetable():
+    6. check_win():
+    7.
+
+  Spielauswertung:
+    -
